@@ -27,10 +27,11 @@
                 ...state,
                 ...newState
             }
+            //只在函数修改中调用
             render()
         }
 
-        //render control
+        //render 函数
         var render = function () {
             if (state.like) {
                 likeBtn.innerHTML = "liked"
@@ -41,6 +42,7 @@
             }
         }
 
+        //事件callback 状态改变函数
         likeBtn.addEventListener('click', function () {
             setState({ like: !state.like })
         })

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript">
+        console.log(this); //window
+
+        // regular scripts run immediately, before the rest of the page is processed
+        alert(typeof button); // Error: button is undefined, the script can't see elements below
+
+        //import() function can be called from anywhere. It returns a promise
+        async function load() {
+            let say = await import('./Scripts/JavaScript.Module.js');
+            say.sayBye("John");
+        }
+    </script>
+
+    <script type="module">
+        console.log(this); //undefined
+
+        // as modules are deferred, the script runs after the whole page is fully loaded
+        alert(typeof button);// object: the script can 'see' the button below
+    </script>
+
+    <script type="module">
+        //a module code is evaluated only the first time when imported
+        import {sayHi} from './Scripts/JavaScript.Module.js';
+
+        import LoginForm from './Scripts/JavaScript.Module.js';
+
+        document.getElementById("p1").innerHTML = sayHi('John');
+    </script>
+
+    <!-- another-site.com must supply Access-Control-Allow-Origin -->
+    <!-- otherwise, the script won't execute -->
+    <script type="module" src="http://another-site.com/their.js"></script>
+
+    <script type="module">
+        //In-dependant top-level scope with up module
+        console.log(import.meta.url);
+    </script>
+
+</head>
+<body>
+<p id="p1">Hello World!</p>
+<button id="button">Button</button>
+<button onclick="load()">Click me</button>
+</body>
+</html>

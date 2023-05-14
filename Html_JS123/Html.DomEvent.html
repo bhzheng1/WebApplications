@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DOM Event life cycle</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 20px;
+        transition: background 800ms;
+      }
+
+      html {
+        height: 100%;
+        width: 100%;
+        background: hsl(193, 66%, 55%);
+        font: bold 40px helvetica, sans-serif;
+      }
+
+      body {
+        height: 100%;
+        width: 100%;
+        background: hsl(193, 66%, 75%);
+      }
+
+      /*
+      button {
+        height: 100px;
+        width: 100px;
+        margin: calc(25% - 50px) calc(50% - 50px);
+        background: hsl(193, 66%, 95%);
+      }*/
+
+      .highlight {
+        background: green;
+      }
+    </style>
+    <script type="text/javascript"></script>
+  </head>
+
+  <body>
+    <div>
+      <img src="./images/domEvent0.png" />
+    </div>
+    <button id="demo">Press here</button>
+    <div id="messages"></div>
+
+    <button id="prop"></button>
+    <script type="text/javascript">
+      var callback = function () {
+        // Handler when the DOM is fully loaded
+      };
+
+      if (
+        document.readyState === "complete" ||
+        (document.readyState !== "loading" &&
+          !document.documentElement.doScroll)
+      ) {
+        callback();
+      } else {
+        document.addEventListener("DOMContentLoaded", callback);
+      }
+
+      (function () {
+        var html = document.getElementsByTagName("html")[0];
+        var body = document.getElementsByTagName("body")[0];
+        var button = document.getElementById("demo");
+        var messages = document.getElementById("messages");
+        var phases = {
+          1: "capture",
+          2: "target",
+          3: "bubble",
+        };
+        var pause = 500;
+
+        function clickEvent(event) {
+          var ms = (event.timeout = event.timeout + pause || 0);
+          var currentTarget = event.currentTarget;
+          var target = event.target;
+          var phaseName = phases[event.eventPhase];
+
+          var message =
+            "Click event targetted at " +
+            target.id +
+            " triggered during " +
+            phaseName +
+            " phase at " +
+            currentTarget.tagName;
+
+          message +=
+            " And this event was previously handled at " +
+            event.previouslyHandledTagName;
+          messages.innerHTML += message + "<br/>";
+          event.previouslyHandledTagName = currentTarget.tagName;
+
+          setTimeout(function () {
+            currentTarget.classList.add("highlight");
+            setTimeout(function () {
+              currentTarget.classList.remove("highlight");
+            }, pause);
+          }, ms);
+        }
+
+        //capture phase
+        html.addEventListener("click", clickEvent, true);
+        body.addEventListener("click", clickEvent, true);
+
+        //target phase
+        button.addEventListener("click", clickEvent, true);
+        button.addEventListener("click", clickEvent);
+
+        //bubble phase
+        body.addEventListener("click", clickEvent);
+        html.addEventListener("click", clickEvent);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <style></style>
+    <script type="text/javascript"></script>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      var callback = function () {
+        //catch all js errors:starts
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+          var string = msg.toLowerCase();
+          var substring = "script error";
+          if (string.indexOf(substring) > -1) {
+            alert("Script Error: See Browser Console for Detail");
+          } else {
+            var message = [
+              "Message: " + msg,
+              "URL: " + url,
+              "Line: " + lineNo,
+              "Column: " + columnNo,
+              "Error object: " + JSON.stringify(error),
+            ].join(" - ");
+
+            alert(message);
+          }
+
+          return false;
+        };
+        //catch all js errors:ends
+        // Handler when the DOM is fully loaded
+      };
+
+      if (
+        document.readyState === "complete" ||
+        (document.readyState !== "loading" &&
+          !document.documentElement.doScroll)
+      ) {
+        callback();
+      } else {
+        document.addEventListener("DOMContentLoaded", callback);
+      }
+    </script>
+  </body>
+</html>

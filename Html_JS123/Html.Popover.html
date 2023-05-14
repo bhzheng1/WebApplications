@@ -1,0 +1,330 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="./css/site.css" />
+    <link rel="stylesheet" href="./bootstrap-4.5.3-dist/css/bootstrap.css" />
+    <script src="./Scripts/lib/jquery-3.5.1.js"></script>
+    <script src="./bootstrap-4.5.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./Scripts/lib/handlebars-v4.7.6.js"></script>
+    <style>
+      .csshover {
+        position: relative;
+      }
+
+      .csshover a {
+        color: #ff6600;
+        text-decoration: none;
+      }
+
+      .csshover a:hover {
+        color: #ffb280;
+      }
+
+      .csshover div {
+        cursor: pointer;
+        /*visiblity: hidden; */
+        display: none;
+        /*must be absolute*/
+        position: absolute;
+        top: 20px;
+        left: -5%;
+        /* approx adjustment for arrow */
+        margin-top: 14px;
+        /* approx adjustment for arrow */
+        margin-left: 0px;
+        width: 180px;
+        line-height: 20px;
+        padding: 8px;
+        font-size: 14px;
+        text-align: center;
+        z-index: 999;
+        color: rgb(113, 157, 171);
+        background: rgb(255, 255, 255);
+        border: 4px solid rgb(255, 255, 255);
+        border-radius: 5px;
+        text-shadow: rgba(0, 0, 0, 0.0980392) 1px 1px 1px;
+        box-shadow: #333 -4px 4px 16px 2px;
+        -webkit-transition: opacity 100ms ease-in;
+        -o-transition: opacity 100ms ease-in;
+        -moz-transition: opacity 100ms ease-in;
+        transition: opacity 100ms ease-in;
+        pointer-events: none;
+      }
+
+      .csshover a:hover + div {
+        /*visibility: visible; */
+        display: block;
+      }
+
+      .csshover div:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #32557f;
+        top: -14px;
+        /*10px + 4px div-border*/
+        left: 45%;
+      }
+
+      /*============tags start=====================================*/
+      dl.tags {
+        padding: 5px 5px 0px 10px;
+        margin: 0;
+        position: relative;
+        display: inline-block;
+      }
+
+      dl.tags dt {
+        font-weight: 100;
+        white-space: nowrap;
+      }
+
+      dt.tags dt img {
+        margin: 0px 5px;
+        width: 20px;
+        height: 17px;
+      }
+
+      dl.tags dd {
+        display: none;
+        position: absolute;
+        top: 2px;
+        left: 105%;
+        padding: 5px 8px;
+        margin-left: 5px;
+        background: #fff;
+        border: 1px solid #314c5e;
+        border-radius: 5px;
+        width: 150px;
+        z-index: 10;
+        box-shadow: 5px 5px 8px #cccccc;
+      }
+
+      dl.tags:hover dd {
+        display: block;
+      }
+
+      dl.tags dd ul {
+        position: relative;
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+        word-break: break-word;
+      }
+
+      dl.tags dd ul::before {
+        content: url(images/arrow-left-blue.png);
+        position: absolute;
+        top: 0px;
+        left: -15px;
+      }
+
+      dl.tags dd ul li {
+        padding-left: 5px;
+        border-bottom: 1px solid #314c5e;
+      }
+
+      dl.tags dd ul li:last-child {
+        border-bottom: none;
+      }
+
+      dl.tags dd ul li a {
+        padding: 3px 10px 3px 10px;
+      }
+
+      dl.tags dd ul li a::before {
+        content: "#";
+        margin: 0 0 0 -16px;
+        padding: 0 8px 0 0;
+      }
+
+      /*============tags end=====================================*/
+
+      .triangle {
+        width: 0;
+        height: 0;
+      }
+
+      .triangle .triangle-up {
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 50px solid #32557f;
+      }
+
+      .triangle .triangle-down {
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-top: 50px solid #32557f;
+      }
+
+      .triangle .triangle-left {
+        border-top: 50px solid transparent;
+        border-right: 50px solid #32557f;
+        border-bottom: 50px solid transparent;
+      }
+
+      .triangle .triangle-right {
+        border-top: 50px solid transparent;
+        border-left: 50px solid #32557f;
+        border-bottom: 50px solid transparent;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <!--Tooltip: use tooltips to show a short text to respondents when they hover over a word or icon.-->
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Tooltip on top"
+      >
+        Tooltip on top
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Tooltip on right"
+      >
+        Tooltip on right
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Tooltip on bottom"
+      >
+        Tooltip on bottom
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="left"
+        title="Tooltip on left"
+      >
+        Tooltip on left
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-html="true"
+        title="<em>Tooltip</em> <u>with</u> <b>HTML</b>"
+      >
+        Tooltip with HTML
+      </button>
+
+      <!--Popover: use popovers to show a longer text, or when you want to have a link to an external web page. 
+        It is shown when the respondent clicks on a word or icon. The window remains visible until they click again outside of the popover.-->
+      <button class="popover-trigger" data-toggle="popover">
+        Hover over me
+      </button>
+      <a
+        class="popup-ajax popover-trigger"
+        data-toggle="popover"
+        href="https://dog.ceo/api/breeds/image/random"
+        >ajax Hover call dog</a
+      >
+      <a
+        class="popup-ajax popover-trigger"
+        data-toggle="popover"
+        href="https://dog.ceo/api/breeds/image/random"
+        >ajax Hover call dog</a
+      >
+
+      <script id="handlebars-template" type="text/x-handlebars-template">
+        <p>{{firstname}} {{lastname}}</p>
+      </script>
+    </div>
+
+    <div class="row">
+      <div class="left col-3">left column</div>
+      <div class="col-4 csshover">
+        <a href="">implement hover with css</a>
+        <div>
+          <h2>Leadership Retreat</h2>
+          <p>
+            Family Group Leaders and Vision Team will be going on a retreat to
+            prepare for the upcoming school year. Meet at BCM at 8am for rides.
+          </p>
+        </div>
+      </div>
+      <div class="right col-3">
+        right column
+        <dl class="tags">
+          <dt>
+            <a href="#"><img src="images/tag.png" alt="" />tags</a>
+          </dt>
+          <dd>
+            <ul>
+              <li><a href="#">aaa</a></li>
+              <li><a href="#">bbb</a></li>
+              <li><a href="#">ccc</a></li>
+            </ul>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="row triangle">
+      <div class="triangle-up"></div>
+      <div class="triangle-down"></div>
+      <div class="triangle-left"></div>
+      <div class="triangle-right"></div>
+    </div>
+
+    <div></div>
+  </body>
+
+  <script>
+    $(document).ready(function () {});
+
+    $('button[data-toggle="popover"]').popover({
+      placement: "right",
+      trigger: "hover",
+      container: "body",
+      html: true,
+      content: function () {
+        var firstname = this.innerHTML;
+        var templateSource = $("#handlebars-template").html();
+        var template = Handlebars.compile(templateSource);
+        var data = template({ firstname: firstname, lastname: "world" });
+        return data;
+      },
+    });
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    $("a.popup-ajax").popover({
+      html: true,
+      trigger: "hover",
+      content: function () {
+        var div_id = "tmp-id-" + $.now();
+        return details_in_popup($(this).attr("href"), div_id);
+      },
+    });
+
+    function details_in_popup(link, div_id) {
+      $.ajax({
+        url: link,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+          html = `<div><img src=${response.message}></div>`;
+          $("#" + div_id).html(html);
+        },
+      });
+      return '<div id="' + div_id + '">Loading...</div>';
+    }
+  </script>
+</html>

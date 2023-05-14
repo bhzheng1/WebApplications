@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <style></style>
+    <script type="text/javascript"></script>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      var callback = function () {
+        // Handler when the DOM is fully loaded
+      };
+
+      if (
+        document.readyState === "complete" ||
+        (document.readyState !== "loading" &&
+          !document.documentElement.doScroll)
+      ) {
+        callback();
+      } else {
+        document.addEventListener("DOMContentLoaded", callback);
+      }
+    </script>
+  </body>
+</html>

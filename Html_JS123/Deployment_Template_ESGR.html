@@ -1,0 +1,340 @@
+<html>
+
+<head>
+    <style>
+        body {
+            height: 100%;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .one {
+            font-size: 15px;
+        }
+
+        .two {
+            font-size: 20px;
+        }
+
+        .medium-font-size {
+            font-size: medium;
+        }
+
+        .bold-font {
+            font-weight: bold;
+        }
+
+        .row {
+            display: flex;
+            height: 100%;
+            min-height: 100%;
+        }
+
+        .leftbox {
+            flex: 50%;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+
+        .rightbox {
+            flex: 50%;
+            padding: 10px;
+            background-color: #aadddd;
+        }
+
+        .warning {
+            background-color: #ff9800;
+        }
+
+        .button {
+            font-size: 30px;
+        }
+        ol.number_bracket {
+            counter-reset: list;
+            list-style-type: none;
+            list-style-position: outside;
+        }
+        ol.number_bracket li{
+            padding-left: 0em;
+        }
+        ol.number_bracket li::before{
+            content: counter(list) ") ";
+            counter-increment: list;
+        }
+
+        ol.c {
+            list-style-type: circle;
+        }
+
+        ol.d {
+            list-style-type: disc;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="leftbox">
+            <div id="App_inst"></div>
+            <div id="db_inst"></div>
+
+        </div>
+
+        <div class="rightbox">
+
+            <form data-toggle="formcache" onsubmit="generateInstruction(event)">
+
+                <div>
+                    <label for="redmineId" class="two bold-font">RedmineId: </label>
+                    <input type="text" id="redmineId" pattern="^([0-9]{5}[,;]{1})*[0-9]{5}$" size="38" required />
+                </div>
+                <br />
+                <div>
+                    <label for="environment" class="two bold-font">Environment: </label>
+                    <select name="environment" id="environment" class="select" required>
+                        <option value="" selected="selected">Select environment</option>
+                    </select>
+                </div>
+                <br />
+
+                <div>
+                    <label for="application" class="two bold-font">Application: </label>
+                    <select name="application" id="application" class="select" required>
+                        <option value="" selected="selected">Select application</option>
+                    </select>
+                </div>
+                <br />
+
+                <label for="replacedFiles" class="two bold-font">Files for replacing</label>
+                <br />
+                <textarea id="replacedFiles" rows="10" cols="100"></textarea>
+                <br />
+
+                <label class="two bold-font">New Files</label></br>
+                <textarea id="newFiles" rows="10" cols="100"></textarea>
+                <br />
+
+                <div>
+                    <label class="two bold-font">HasSQl: </label>
+                    <input type="radio" id="choice_yes" name="choice" value="yes" required onclick="showSql()">
+                    <label for="choice_yes">Yes</label>
+                    <input type="radio" id="choice_no" name="choice" value="no" required onclick="showSql()">
+                    <label for="choice_no">No</label>
+                </div>
+                <br />
+
+                <div id="sql" style="display: none">
+                    <label class="two bold-font">SQL</label></br>
+                    <textarea id="queries" rows="5" cols="100"></textarea>
+                </div>
+                <br />
+
+                <input type="submit" class="button bold-font">
+            </form>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var applist = {
+            'SSO': { 'Staging': 'ssostaging.csd.disa.mil', 'Production': 'esgrnew.csd.disa.mil' },
+            'MMS': { 'Staging': 'ssostaging.csd.disa.mil', 'Production': 'esgrnew.csd.disa.mil' },
+            'ICMS': { 'Staging': 'ssostaging.csd.disa.mil', 'Production': 'esgrnew.csd.disa.mil' },
+            'ESGR': { 'Staging': 'esgrstaging.csd.disa.mil', 'Production': 'esgrwebsite2.csd.disa.mil' }
+        };
+        var envList = {
+            'localhost': {
+                'app': 'localhost',
+                'database': 'localhost',
+                'dnn': 'localhost',
+                'dnnDb': 'localhost'
+            },
+            'dev':{
+                'app': 'ec2-54-172-212-188.compute-1.amazonaws.com',
+                'database': 'ec2-34-196-39-57.compute-1.amazonaws.com',
+                'dnn': 'ec2-54-172-212-188.compute-1.amazonaws.com',
+                'dnnDb': 'ec2-34-196-39-57.compute-1.amazonaws.com'
+            },
+            'Staging': {
+                'app': 'UMECHPAA9',
+                'database': 'UMECHPAA8',
+                'dnn': 'UMECHPAA9',
+                'dnnDb': 'UMECHPAA8'
+            },
+            'Production': {
+                'app': 'UMECHPAA7',
+                'database': 'UMECHPAA5',
+                'dnn': 'UMECHPABB',
+                'dnnDb': 'UMECHPABA'
+            }
+        };
+
+        function appDep(env, app, r, n, rd) {
+
+            var html = `<h1>Application: ${app}</h1><h1>Redmine Task #: ${rd}</h1>`;
+            html +=`<h2>Date: ${moment().format('MMM D, YYYY')}</h2>`
+            var app_inst = document.getElementById("App_inst");
+            var a = app == 'ESGR' ? 'dnn' : 'app'
+
+            html += '<h2>Application Deployment</h2><ol>';
+            html += `<li><p>Log in to <span class="bold-font">${env}</span> web server (<span class="bold-font">${this.envList[env][a]}</span>)</p></li>`;
+            html += `<li><p>Open and expand IIS on <span class="bold-font">${env}</span></p></li>`;
+            html += `<li><p>Go to <span class="bold-font">${this.applist[app][env]}</span>, right-click on <span class="bold-font">${app == 'SSO' || app == 'ESGR' ? 'the website' : app}</span> and select <span class="bold-font">Explore<span></p></li>`;
+
+            if (app == "ICMS") {
+                html +=`<li><p>Back up <span class="bold-font">All</span> files to a location of your choice</p></li>`;
+                html +=`<li><p>Delete all files except <span class="bold-font">"Logs"</span> folder and <span class="bold-font">"web.config"</span> file</p></li>`;
+                html +=`<li><p>Copy all files from <span class="bold-font">"ICMS"</span> folder attached to the ticket</p></li>`;
+            } else {
+                if (r) {
+                    html += "<li><p>Back up the following files to a location of your choice:</p></li>";
+                    html += `<ol class="number_bracket">`;
+                    var lines = r.split("\n");
+                    for (var i = 0; i < lines.length; i++) {
+                        html += `<li> ${lines[i]}</li>`;
+                    }
+                    html += "</ol>";
+                    //html += r.replace(/\n/g, '<br/>');
+                    html += "<li><p>Replace the above files with same named ones in attached zip folder</p></li>";
+                };
+
+                if (n) {
+                    html += "<li><p>Copy the following new files in attached zip folder to correspond location</p></li>";
+                    html += `<ol class="number_bracket">`;
+                    var lines = n.split("\n");
+                    for (var i = 0; i < lines.length; i++) {
+                        html += `<li> ${lines[i]}</li>`;
+                    }
+                    html += "</ol>";
+                    //html += n.replace(/\n/g, "</li><br/><li>");
+                }
+            }
+
+            html += "<li><p>Reset IIS:</p></li>";
+            html += "<p>•	open a command prompt window as administrator<br/>";
+            html += "•	type:  iisreset</p>";
+            html += '<ol>';
+            app_inst.innerHTML = html;
+        }
+
+        function dbDep(env, app, sql,rd) {
+            var html = '<div>';
+            var a = app == 'ESGR' ? 'dnnDb' : 'database';
+
+            html += `<div><h2>Database Deployment</h2>`;
+            html += `<ol><li><p>Log in to <span class="bold-font">${env}</span> Database server (<span class="bold-font">${this.envList[env][a]}</span>)</p></li>`;
+            html += `<li><p>Open the <span class="bold-font">SQL Server Management Studio<span></p></li>`;
+            html += `<li><p>Open and run the sql files in attached zip folder</p></li>`;
+
+            if (sql) {
+            html += `<ol class="number_bracket">`;
+                    var lines = sql.split("\n");
+                    for (var i = 0; i < lines.length; i++) {
+                        html += `<li> ${lines[i]}</li>`;
+                    }
+                    html += "</ol>";
+            }
+            html += `<li><p>If you see any <span class="bold-font">output error</span>, please post it to the Task</p></li>`;
+            html += '<ol></div>';
+
+            html += `<h2>Database Deployment</h2>`
+            html += `<ol><li><p>Log in to <span class="bold-font">${env}</span> Database server (<span class="bold-font">${this.envList[env][a]}</span>)</p></li>`;
+            html += `<li><p>Open a CMD window as <span class="bold-font">Administrator<span></p></li>`;
+            html += `<li><p>Go to the attached zip folder</p></li>`;
+            html += `<li><p>At the CMD prompt, type: deployment_sql.bat</p></li><li><p>After running, the log file "SQLlog.txt" will be created</p></li>`;
+            html += '<ol></div>';
+
+            html += `<div><p>@echo off</p>`
+            html += `<p>echo start to run sql > SQLlog.txt</p>`;
+
+            if (sql) {
+                var lines = sql.split('\n')
+                for (var i = 0; i < lines.length; i++) {
+                    html += `sqlcmd -E -S ${this.envList[env][a]} -Q "select GetDate() as [${lines[i]} start]" >> SQLlog.txt </p>`;
+                    html += `sqlcmd -E -S ${this.envList[env][a]} -i ${lines[i]} >> SQLlog.txt </p>`;
+                    html += `sqlcmd -E -S ${this.envList[env][a]} -Q "select GetDate() as [${lines[i]} end]" >> SQLlog.txt </p>`;
+                };
+            };
+            html +=`</div>`
+
+            var db_inst = document.getElementById("db_inst");
+            db_inst.innerHTML = html;
+        };
+
+        function generateInstruction(e) {
+            e.preventDefault();
+            var appSelected = document.getElementById("application").value;
+            var envSelected = document.getElementById("environment").value;
+            var replacedFiles = document.getElementById("replacedFiles").value.trim();
+            var newFiles = document.getElementById("newFiles").value.trim();
+            var hasSQl = document.querySelector('input[name="choice"]:checked').value;
+            var sql = document.getElementById("queries").value.trim();
+            var redmineId = document.getElementById("redmineId").value.trim()
+
+            appDep(envSelected, appSelected, replacedFiles, newFiles, redmineId);
+
+            if (hasSQl == 'yes') {
+                dbDep(envSelected, appSelected, sql,redmineId);
+            }
+        };
+
+        function showSql() {
+            var hasSQl = document.querySelector('input[name="choice"]:checked').value;
+            var db = document.getElementById("sql");
+            db.style.display = hasSQl == 'yes' ? "block" : "none";
+        };
+
+
+        window.onload = function () {
+            var application = this.document.getElementById('application');
+            var environment = this.document.getElementById("environment");
+
+            var env_text = this.document.getElementsByClassName("envClass");
+
+            Object.keys(this.envList).forEach(
+                function (k) {
+                    environment.options[environment.options.length] = new Option(k, k);
+                }
+            );
+
+            Object.keys(this.applist).forEach(
+                function (k) {
+                    application.options[application.options.length] = new Option(k + ' App', k);
+                }
+            );
+
+            //for (var a in this.applist) {
+            //     application.options[application.options.length] = new Option(a + ' App', a);
+            // };
+
+            // for (var a in envList) {
+            //      environment.options[environment.options.length] = new Option(a, a);
+            // };
+
+            environment.onchange = function () {
+                if (this.selectedIndex < 1) {
+                    for (var i = 0; i < env_text.length; i++) {
+                        env_text[i].classList.add('warning');
+                        env_text[i].innerHTML = 'SELECT ENV';
+                    };
+                }
+                else {
+                    for (var i = 0; i < env_text.length; i++) {
+                        env_text[i].classList.remove('warning');
+                        env_text[i].innerHTML = this.value;
+                    };
+                };
+
+            };
+            environment.onchange();
+        };
+    </script>
+    <script src="Scripts/lib/jquery-3.5.0.min.js"></script>
+    <script src="Scripts/lib/moment.js"></script>
+</body>
+
+</html>
