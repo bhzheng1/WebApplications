@@ -1,0 +1,45 @@
+<p>base works!</p>
+<div class="play-container">
+  <!--one way data binding-->
+  <p>You've clicked <button (click)="countClick()">Click Me</button> &nbsp;&nbsp;&nbsp;&nbsp; {{ clickCounter }} times.</p>
+</div>
+
+<div class="play-container">
+  <!--Two way data binding-->
+  <p>
+    <input type="text" [(ngModel)]="name"><br>
+    <strong>You said: </strong> {{ name }}
+  </p>
+</div>
+
+<!-- ng-template with if else -->
+<div class="play-container">
+  <ng-template [ngIf]="clickCounter > 4" [ngIfElse]="none">
+    <p>The click counter <strong>IS GREATER</strong> than 4.</p>
+  </ng-template>
+
+  <ng-template #none>
+    <p>The click counter is <strong>not greater</strong> than 4.</p>
+  </ng-template>
+</div>
+
+<!--style Binding-->
+<div class="play-container" [style.background-color]="clickCounter > 4 ? 'yellow' : 'lightgray'">
+  <p>The click counter is {{clickCounter}}.</p>
+</div>
+<div class="play-container" [ngStyle]="{
+  'background-color': clickCounter > 4 ? 'yellow' : 'lightgray',
+  'border':           clickCounter > 4 ? '4px solid black' : 'none'}">
+  <p>The click counter is {{clickCounter}}.</p>
+</div>
+
+<!--class Binding-->
+<div class="play-container" [class.active]="clickCounter > 4">
+  <p></p>
+  <p>The click counter is {{clickCounter}}.</p>
+</div>
+
+<div class="play-container" [ngClass]="setClasses()">
+  <p>class binding</p>
+  <p>The click counter is {{clickCounter}}.</p>
+</div>
