@@ -1,0 +1,53 @@
+<!--引入state的概念-->
+<!--优点：数据（state）与view，control分离。control只更新state，state只更新view。代码更干净-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button type="button" id="like">like</button>
+    <script>
+        var likeBtn = document.getElementById("like")
+
+        //state
+        var state = {
+            like: false,
+            color: 'red'
+        }
+
+        //用一个函数来修改状态
+        var setState = function (newState) {
+            state = {
+                ...state,
+                ...newState
+            }
+            //只在函数修改中调用
+            render()
+        }
+
+        //render 函数
+        var render = function () {
+            if (state.like) {
+                likeBtn.innerHTML = "liked"
+                likeBtn.style.color = "red"
+            } else {
+                likeBtn.innerHTML = "like"
+                likeBtn.style.color = "black"
+            }
+        }
+
+        //事件callback 状态改变函数
+        likeBtn.addEventListener('click', function () {
+            setState({ like: !state.like })
+        })
+
+    </script>
+</body>
+
+</html>

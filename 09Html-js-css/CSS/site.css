@@ -1,0 +1,29 @@
+body {
+    padding: 20px;
+  }
+.hide {
+    display: none;
+}
+.popover-table > div {
+    display: flex;
+    flex-direction: row;
+}
+.popover-table > div:not(:last-child) {
+    margin-bottom: 5px;
+}
+.popover-table > div:nth-child(1) {
+    font-weight: 700;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #cecece;
+}
+.popover-table > div > div:nth-child(1),
+.popover-table > div > div:nth-child(3) {
+    width: 20%;
+}
+.popover-table > div > div:nth-child(2) {
+    width: 60%;
+}
+.popover-table > div > div:nth-child(3) {
+    padding-left: 5px;
+    white-space: nowrap;
+}

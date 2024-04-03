@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <style></style>
+    <script type="text/javascript"></script>
+  </head>
+
+  <body>
+    <p>
+      <a
+        class="btn btn-primary"
+        data-toggle="collapse"
+        href="#multiCollapseExample1"
+        role="button"
+        aria-expanded="false"
+        aria-controls="multiCollapseExample1"
+        >Toggle first element</a
+      >
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="collapse"
+        data-target="#multiCollapseExample2"
+        aria-expanded="false"
+        aria-controls="multiCollapseExample2"
+      >
+        Toggle second element
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="collapse"
+        data-target=".multi-collapse"
+        aria-expanded="false"
+        aria-controls="multiCollapseExample1 multiCollapseExample2"
+      >
+        Toggle both elements
+      </button>
+    </p>
+    <div class="row">
+      <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+          <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
+            labore wes anderson cred nesciunt sapiente ea proident.
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample2">
+          <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
+            labore wes anderson cred nesciunt sapiente ea proident.
+          </div>
+        </div>
+      </div>
+    </div>
+    <button id="test" type="button" class="btn btn-primary">Primary</button>
+
+    <div class="coins"></div>
+    <script>
+      function callCoins() {
+        $.ajax({
+          url: "https://api.coingecko.com/api/v3/coins/list",
+          dataType: "json",
+          success: function (data) {
+            for (let i = 0; i < 10; i++) {
+              $(".coins").append(`
+                    <div class="coin">
+                        <span>
+                            <p id="coin-sym">${data[i].symbol}</p>
+                            <p>${data[i].name}</p>
+                            <button class="btn btn-primary" data-toggle="collapse" data-target="#collapse${data[i].id}">More Info</button>
+                            <div class="collapse" id="collapse${data[i].id}" data-id="${data[i].id}">example</div>
+                        </span>
+                        <div class="custom-control custom-switch">
+                         <input type="checkbox" class="custom-control-input" id="b${data[i].id}">
+                         <label class="custom-control-label" for="#b${data[i].id}"></label>
+                        </div>
+                    </div>
+                    </br>
+                `);
+            }
+          },
+        });
+      }
+
+      $("#test").on("click", function (e) {
+        alert("hello");
+      });
+
+      // Calling API to load the coins data to the Home page
+      $(document).ready(function () {
+        callCoins();
+      });
+
+      $(document).on("show.bs.collapse", "[id^=collapse]", function (e) {
+        let id = $(e.target).data("id");
+        $.ajax({
+          url: "https://api.coingecko.com/api/v3/coins/" + id,
+          dataType: "json",
+          success: function (data) {
+            document.cookie = "cross-site-cookie=bar; SameSite=None; Secure";
+            $(e.target).find(".moreInfo").remove();
+            $(e.target).append(`
+                <div class="moreInfo">
+                    <span>
+                        <p><img src="${data.image.small}" /></p>
+                    </span>
+                </div>
+            `);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

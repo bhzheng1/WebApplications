@@ -1,0 +1,11 @@
+.card {
+    max-width: 420px;
+    margin-top: 50px;
+}
+.container {
+    display: "Flex";
+    justify-content: "center";
+}
+.actions {
+    float: "right";
+}

@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+    /* Colors: */
+    --primary-color: #1f68fa;
+    --light-text-color: #f5f6f7;
+    --light-placeholder-color: #ced4de;
+    --dark-text-color: #2d3747;
+
+    /* Shadows: */
+    --shadow-dilute: 5px 5px 25px 0 rgba(46, 61, 73, 0.2);
+    --shadow-conc: 2px 4px 8px 0 rgba(46, 61, 73, 0.2);
+
+    /* Misc: */
+    --transition: all 0.2s ease-in-out;
+}
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+}
+
+.primary-button {
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 0;
+    padding: 1rem;
+    margin-right: 1rem;
+    border-radius: 4px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    box-shadow: var(--shadow-dilute);
+}
+
+.primary-button:active {
+    box-shadow: var(--shadow-conc);
+}
+
+.Menu {
+    padding: 1rem;
+    position: relative;
+    background: #282828;
+    color: var(--light-text-color);
+    height: 100%;
+}
+.Menu button {
+    background: none;
+    border: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    fill: var(--light-placeholder-color);
+    transition: var(--transition);
+}
+
+.Menu button:hover {
+    fill: var(--light-text-color);
+}
+@layer base {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-bold;
+    }
+
+    h1 {
+        @apply text-4xl;
+        margin: 0 0 5px 0;
+    }
+    h2 {
+        @apply text-3xl;
+    }
+    h3 {
+        @apply text-2xl;
+    }
+    h4 {
+        @apply text-xl;
+    }
+    h5 {
+        @apply text-lg;
+    }
+    p {
+        @apply text-sm;
+    }
+    form {
+        @apply rounded-xl p-4;
+    }
+    label {
+        @apply mt-4;
+    }
+    input,
+    select,
+    textarea {
+        @apply m-1 rounded p-1;
+    }
+}
+
+@layer components {
+    .icon {
+        @apply text-xl;
+    }
+    .btn {
+        @apply hover:no-underline bg-blue-accent tracking-wider w-full text-center text-nav font-bold cursor-pointer uppercase px-4 py-2 rounded-md hover:bg-blue-accent-hover transition-colors block;
+    }
+}

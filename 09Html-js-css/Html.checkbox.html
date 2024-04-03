@@ -1,0 +1,378 @@
+<!--https://medium.com/claritydesignsystem/pure-css-accessible-checkboxes-and-radios-buttons-54063e759bb3-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <style>
+      /* Hiding the default checkbox without losing accessibility */
+      .checkbox input[type="checkbox"] {
+        opacity: 0;
+      }
+
+      /* Creating a fake checkbox using pseudo-elements:Creating the outer box */
+      .checkbox label::before {
+        content: "";
+        display: inline-block;
+        position: absolute;
+
+        height: 16px;
+        width: 16px;
+
+        border: 1px solid;
+        left: 0px;
+        top: 3px;
+      }
+
+      /* Creating a fake checkbox using pseudo-elements:Creating the checkmark */
+      .checkbox label::after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+
+        height: 6px;
+        width: 9px;
+        border-left: 2px solid;
+        border-bottom: 2px solid;
+
+        transform: rotate(-45deg);
+        left: 4px;
+        top: 7px;
+      }
+
+      /* Positioning the outer box and checkmark */
+      .checkbox label {
+        position: relative;
+        display: inline-block;
+        /*16px width of fake checkbox + 6px distance between fake checkbox and text*/
+        padding-left: 22px;
+      }
+
+      /*Hide the checkmark by default*/
+      .checkbox input[type="checkbox"] + label::after {
+        content: none;
+      }
+      /*Unhide the checkmark on the checked state*/
+      .checkbox input[type="checkbox"]:checked + label::after {
+        content: "";
+      }
+      /*Adding focus styles on the outer-box of the fake checkbox*/
+      .checkbox input[type="checkbox"]:focus + label::before {
+        outline: rgb(59, 153, 252) auto 5px;
+      }
+
+      /*-------------------------------------------------------------*/
+      .myCheckbox input {
+        display: none;
+        position: absolute;
+      }
+      .myCheckbox input + span {
+        display: inline-block;
+        position: relative;
+        vertical-align: middle;
+        padding-left: 22px;
+      }
+
+      .myCheckbox span::before {
+        content: "";
+        width: 15px;
+        height: 15px;
+        border: 1px solid grey;
+        margin: 0 4px 0 0;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .myCheckbox input:checked + span::after {
+        content: "\2714";
+        font-size: 15px;
+        display: inline-block;
+        position: absolute;
+        left: 23px;
+        top: 1px;
+      }
+      /*-------------------------------------------------------------*/
+      label,
+      input[type="radio"] + span,
+      input[type="radio"] + span::before,
+      label,
+      input[type="checkbox"] + span,
+      input[type="checkbox"] + span::before {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      label *,
+      label * {
+        cursor: pointer;
+      }
+
+      input[type="radio"],
+      input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+      }
+
+      input[type="radio"] + span,
+      input[type="checkbox"] + span {
+        font: normal 11px/14px Arial, Sans-serif;
+        color: #333;
+      }
+
+      label:hover span::before,
+      label:hover span::before {
+        -moz-box-shadow: 0 0 2px #ccc;
+        -webkit-box-shadow: 0 0 2px #ccc;
+        box-shadow: 0 0 2px #ccc;
+      }
+
+      label:hover span,
+      label:hover span {
+        color: #000;
+      }
+
+      input[type="radio"] + span::before,
+      input[type="checkbox"] + span::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        margin: 0 4px 0 0;
+        border: solid 1px #a8a8a8;
+        line-height: 14px;
+        text-align: center;
+
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+
+        background: #f6f6f6;
+        background: -moz-radial-gradient(#f6f6f6, #dfdfdf);
+        background: -webkit-radial-gradient(#f6f6f6, #dfdfdf);
+        background: -ms-radial-gradient(#f6f6f6, #dfdfdf);
+        background: -o-radial-gradient(#f6f6f6, #dfdfdf);
+        background: radial-gradient(#f6f6f6, #dfdfdf);
+      }
+
+      input[type="radio"]:checked + span::before,
+      input[type="checkbox"]:checked + span::before {
+        color: #666;
+      }
+
+      input[type="radio"]:disabled + span,
+      input[type="checkbox"]:disabled + span {
+        cursor: default;
+
+        -moz-opacity: 0.4;
+        -webkit-opacity: 0.4;
+        opacity: 0.4;
+      }
+
+      input[type="checkbox"] + span::before {
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+      }
+
+      input[type="radio"]:checked + span::before {
+        content: "\2022";
+        font-size: 30px;
+        margin-top: -1px;
+      }
+
+      input[type="checkbox"]:checked + span::before {
+        content: "\2714";
+        font-size: 12px;
+      }
+
+      input[class="blue"] + span::before {
+        border: solid 1px blue;
+        background: #b2dbff;
+        background: -moz-radial-gradient(#b2dbff, #dfdfdf);
+        background: -webkit-radial-gradient(#b2dbff, #dfdfdf);
+        background: -ms-radial-gradient(#b2dbff, #dfdfdf);
+        background: -o-radial-gradient(#b2dbff, #dfdfdf);
+        background: radial-gradient(#b2dbff, #dfdfdf);
+      }
+      input[class="blue"]:checked + span::before {
+        color: darkblue;
+      }
+
+      input[class="red"] + span::before {
+        border: solid 1px red;
+        background: #ff9593;
+        background: -moz-radial-gradient(#ff9593, #dfdfdf);
+        background: -webkit-radial-gradient(#ff9593, #dfdfdf);
+        background: -ms-radial-gradient(#ff9593, #dfdfdf);
+        background: -o-radial-gradient(#ff9593, #dfdfdf);
+        background: radial-gradient(#ff9593, #dfdfdf);
+      }
+      input[class="red"]:checked + span::before {
+        color: darkred;
+      }
+      /*-------------------------------------------------------------*/
+    </style>
+    <script type="text/javascript"></script>
+  </head>
+
+  <body>
+    <div class="checkbox">
+      <input type="checkbox" id="checkbox_1" />
+      <label for="checkbox_1">Pure CSS Checkbox</label>
+    </div>
+
+    <div>
+      <label class="myCheckbox">
+        <input type="checkbox" name="test" />
+        <span>Label for my styled "checkbox"</span>
+      </label>
+    </div>
+
+    <div class="checkbox">
+      <input type="checkbox" id="checkbox_2" />
+      <label for="checkbox_2">Pure CSS Checkbox</label>
+    </div>
+
+    <div>
+      <label class="myCheckbox">
+        <input type="checkbox" name="test" />
+        <span>Label for my styled "checkbox"</span>
+      </label>
+    </div>
+    <div>
+      <label
+        ><input type="radio" checked="checked" name="radios-01" /><span
+          >checked radio button</span
+        ></label
+      >
+      <label
+        ><input type="radio" name="radios-01" /><span
+          >unchecked radio button</span
+        ></label
+      >
+      <label
+        ><input type="radio" name="radios-01" disabled="disabled" /><span
+          >disabled radio button</span
+        ></label
+      >
+
+      <br />
+
+      <label
+        ><input
+          type="radio"
+          checked="checked"
+          name="radios-02"
+          class="blue"
+        /><span>checked radio button</span></label
+      >
+      <label
+        ><input type="radio" name="radios-02" class="blue" /><span
+          >unchecked radio button</span
+        ></label
+      >
+      <label
+        ><input
+          type="radio"
+          name="radios-02"
+          disabled="disabled"
+          class="blue"
+        /><span>disabled radio button</span></label
+      >
+
+      <br />
+
+      <label
+        ><input
+          type="radio"
+          checked="checked"
+          name="radios-03"
+          class="red"
+        /><span>checked radio button</span></label
+      >
+      <label
+        ><input type="radio" name="radios-03" class="red" /><span
+          >unchecked radio button</span
+        ></label
+      >
+      <label
+        ><input
+          type="radio"
+          name="radios-03"
+          disabled="disabled"
+          class="red"
+        /><span>disabled radio button</span></label
+      >
+
+      <br />
+
+      <label
+        ><input type="checkbox" checked="checked" name="checkbox-01" /><span
+          >selected checkbox</span
+        ></label
+      >
+      <label
+        ><input type="checkbox" name="checkbox-02" /><span
+          >unselected checkbox</span
+        ></label
+      >
+      <label
+        ><input type="checkbox" name="checkbox-03" disabled="disabled" /><span
+          >disabled checkbox</span
+        ></label
+      >
+
+      <br />
+
+      <label
+        ><input
+          type="checkbox"
+          checked="checked"
+          name="checkbox-01"
+          class="blue"
+        /><span>selected checkbox</span></label
+      >
+      <label
+        ><input type="checkbox" name="checkbox-02" class="blue" /><span
+          >unselected checkbox</span
+        ></label
+      >
+      <label
+        ><input
+          type="checkbox"
+          name="checkbox-03"
+          disabled="disabled"
+          class="blue"
+        /><span>disabled checkbox</span></label
+      >
+
+      <br />
+
+      <label
+        ><input
+          type="checkbox"
+          checked="checked"
+          name="checkbox-01"
+          class="red"
+        /><span>selected checkbox</span></label
+      >
+      <label
+        ><input type="checkbox" name="checkbox-02" class="red" /><span
+          >unselected checkbox</span
+        ></label
+      >
+      <label
+        ><input
+          type="checkbox"
+          name="checkbox-03"
+          disabled="disabled"
+          class="red"
+        /><span>disabled checkbox</span></label
+      >
+    </div>
+  </body>
+</html>

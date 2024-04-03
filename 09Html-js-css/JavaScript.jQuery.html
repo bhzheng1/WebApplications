@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <style></style>
+    <script type="text/javascript"></script>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      //type 1: This is not a actually a plugin, it's an object passed as a function, as plugins tend to be functions.
+      (function ($) {
+        ($.fn.jPluginName = {}), ($.fn.jPluginName.defaults = {});
+      })(jQuery);
+
+      //type 2: This is again not a plugin as it does not extend the $.fn object. It's just an extenstion of the jQuery core, although the outcome is the same. This is if you want to add traversing functions such as toArray and so on.
+      (function ($) {
+        $.jPluginName = {};
+      })(jQuery);
+
+      //Type 3: This is the best method to add a plugin, the extended prototype of jQuery takes an object holding your plugin name and function and adds it to the plugin library for you.
+      (function ($) {
+        //Attach this new method to jQuery
+        $.fn.extend({
+          //This is where you write your plugin's name
+          pluginname: function (_options) {
+            // Put defaults inline, no need for another variable...
+            var options = $.extend(
+              {
+                defaults: "go here...",
+              },
+              _options
+            );
+
+            //Iterate over the current set of matched elements
+            return this.each(function () {
+              //code to be inserted here
+            });
+          },
+        });
+      })(jQuery);
+      var callback = function () {
+        // Handler when the DOM is fully loaded
+      };
+
+      if (
+        document.readyState === "complete" ||
+        (document.readyState !== "loading" &&
+          !document.documentElement.doScroll)
+      ) {
+        callback();
+      } else {
+        document.addEventListener("DOMContentLoaded", callback);
+      }
+    </script>
+  </body>
+</html>

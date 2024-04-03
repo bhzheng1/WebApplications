@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mocha Tests</title>
+    <!-- add mocha css, to show results-->
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+
+</head>
+<body>
+
+<!-- add mocha framework code-->
+<script src="https://unpkg.com/mocha/mocha.js"></script>
+<!-- add chai lib-->
+<script src="https://unpkg.com/chai/chai.js"></script>
+
+<script class="mocha-init">
+    mocha.setup('bdd'); // minimal setup
+    mocha.checkLeaks();
+</script>
+
+<script>
+    // chai has a lot of stuff, let's make assert global
+    let assert = chai.assert;
+</script>
+
+<script>
+    function pow(x, n){
+        /*function code is to be written*/
+        if(n<0) return NaN;
+        if(Math.round(n)!=n) return NaN;
+
+        let result = 1;
+        for (let i = 0; i<n;i++){
+            result *=x;
+        }
+        return result;
+    }
+
+    function Calculator(){
+        let methods = {
+            "+":(a,b)=>a+b,
+            "-":(a,b)=>a-b,
+        }
+
+        this.calculate = function (str) {
+            let split = str.split(" ");
+            let a = +split[0];
+            let op = split[1];
+            let b = +split[2];
+
+            if (!methods[op]||isNaN(a)||isNaN(b)) {
+                return NaN;
+            }
+            return methods[op](a,b);
+        }
+
+        this.addMethod=function(str,fuc){
+            methods[str] = fuc;
+        }
+    }
+
+</script>
+
+<!-- the script with tests (describe, it...) -->
+<script src="Scripts/lib/MochaTest.js"></script>
+
+<!-- the element with id="mocha" will contain test result-->
+<div id = "mocha"></div>
+
+<!-- runt test user browser-->
+<script class="mocha-exec">
+    mocha.run();
+</script>
+</body>
+</html>

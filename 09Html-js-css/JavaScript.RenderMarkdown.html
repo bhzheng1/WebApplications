@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .loading-screen {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.75);
+            text-align: center;
+            opacity: 1;
+            z-index: 99999;
+            -webkit-transition: all 0.55s ease-in-out;
+            -moz-transition: all 0.55s ease-in-out;
+            -o-transition: all 0.55s ease-in-out;
+            transition: all 0.55s ease-in-out;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: -ms-flex;
+            display: flex;
+            -webkit-align-items: center;
+            -ms-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            -ms-justify-content: center;
+            justify-content: center;
+        }
+
+        .loading-screen .loading-img {
+            display: inline-block;
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .loading-screen .loading-img div {
+            position: absolute;
+            border: 4px solid #0078D6;
+            opacity: 1;
+            border-radius: 100%;
+            animation: ripple 1.75s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+
+        .loading-screen .loading-img div:nth-child(2) {
+            animation-delay: -1s;
+        }
+
+        .loading-screen.loaded {
+            -webkit-transition: all 0.55s ease-in-out;
+            -moz-transition: all 0.55s ease-in-out;
+            -o-transition: all 0.55s ease-in-out;
+            transition: all 0.55s ease-in-out;
+            opacity: 0;
+        }
+    </style>
+
+    <script type="text/javascript" src="Scripts/lib/showdown.min.js"></script>
+    <script type="text/javascript" src="Scripts/lib/jquery-3.5.0.min.js"></script>
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            $('.loading-screen').addClass('loaded');
+            setTimeout(function () {
+                $('.loading-screen').addClass('hide');
+            }, 500);
+        });
+
+        var client = new XMLHttpRequest();
+        client.open('GET', 'Data/arrays.txt');
+        client.onreadystatechange = function () {
+            alert(client.responseText);
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="loading-screen">
+        <div class="loading-img">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div id="preview">
+
+    </div>
+
+</body>
+
+</html>

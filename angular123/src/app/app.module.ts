@@ -42,9 +42,9 @@ import { HeroSearchComponent } from './hero/hero-search/hero-search.component';
   ],
 
   //declarations的子集，可用于其它模块的组件模板。（用来控制将哪些内部成员暴露给外部使用。
-  //导入一个module并不意味着会自动导入这个module内部导入的module所暴露出的公共成员。
+  //导入一个module并不意味着会自动导入这个module内部导入的module中所暴露出的公共成员。
   //除非导入的这个module把它内部导入的module写到exports中。）
- exports:[],
+  exports: [],
 
 
   //本模块声明的组件模板需要的类所在的其它模块
@@ -55,7 +55,7 @@ import { HeroSearchComponent } from './hero/hero-search/hero-search.component';
     AppRoutingModule,
     ServiceModule.forRoot(),
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryHeroService,{dataEncapsulation:false}),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryHeroService, { dataEncapsulation: false }),
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -74,6 +74,6 @@ import { HeroSearchComponent } from './hero/hero-search/hero-search.component';
   //不会再模板中被引用到的组件。
   //这个属性一般情况下只有ng自己使用，一般是bootstrap组件或者路由组件，ng会自动把bootstrap、路由组件放入其中。
   //除非不通过路由动态将component加入到dom中，否则不会用到这个属性。
-  entryComponents:[]
+  entryComponents: []
 })
 export class AppModule { }

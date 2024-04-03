@@ -1,0 +1,39 @@
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input {
+    display: block;
+    box-sizing: border-box;
+    margin: auto;
+
+    height: 30px;
+    width: 100%;
+
+    border: 1px solid lightgray;
+    border-radius: 10px;
+
+    padding-left: 10px;
+}
+
+button {
+    display: block;
+    box-sizing: border-box;
+    margin: 15px auto;
+
+    height: 60px;
+    width: 100%;
+
+    border: none;
+    border-radius: 20px;
+
+    font-weight: bold;
+    color: white;
+    background-color: cornflowerblue;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}

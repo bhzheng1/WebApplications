@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <h1 style="color:green;">
+        Best Computer Science Platform
+    </h1>
+    <input placeholder="Enter some text" name="name" />
+    <p id="result"></p>
+    <p id="values"></p>
+
+    <script>
+        $(document).ready(function () {
+        });
+        function cache_clear() {
+            window.location.reload(true);
+        }
+        const input = document.querySelector('input');
+        const log2 = document.getElementById('values');
+        const log1 = document.getElementById('result');
+
+        function getInputedString(prev, curr, selEnd) {
+            if (prev.length > curr.length) {
+                console.log("User has removed \ cut character(s)");
+                return "";
+            }
+
+            var lengthOfPasted = curr.length - prev.length;
+            if (curr.substr(0, selEnd - lengthOfPasted) + curr.substr(selEnd) === prev) {
+                return curr.substr(selEnd - lengthOfPasted, lengthOfPasted);
+            } else {
+                console.log("The user has replaced a selection :(");
+                return "n\\a";
+            }
+        }
+
+        var prevText = "";
+
+        input.addEventListener('input', updateValue);
+
+        function updateValue(e) {
+            var lastInput = getInputedString(prevText, this.value, this.selectionEnd);
+            console.log(this.value);
+            console.log(this.selectionEnd);
+            if (lastInput == ",") {
+                lastInput += "hello world";
+                this.value += "hello world";
+                this.selectionEnd += "hello world".length;
+            }
+            console.log(this.value);
+            console.log(this.selectionEnd);
+            prevText = this.value;
+
+            log1.textContent = "Last input: " + lastInput;
+            log2.textContent = "whole input: " + prevText;
+        }
+    </script>
+</body>
+
+</html>

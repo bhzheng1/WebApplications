@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>MathJax example</title>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async>
+</script>
+</head>
+<body>
+<p>
+<h1>矩阵和向量相乘</h1>
+我们想用三个未知量\(u, v, w\) 重写方程，得到简化的矩阵形式 \(Ax = b\)。全写出来就是，矩阵乘以向量等于向量：
+$$\begin{equation}
+{\rm Matrix\ form\ Ax=b\quad}
+\begin{bmatrix}
+2&1&1\\4&-6&0\\-2&7&2
+\end{bmatrix}
+\begin{bmatrix}
+u\\v\\w
+\end{bmatrix}=
+\begin{bmatrix}
+5\\-2\\9
+\end{bmatrix}\tag1
+\end{equation}$$
+
+矩阵\(A\)和一个向量\(x\)相乘有两种方法。一种方法是一次乘以一行，\(A\)的每行和\(x\)结合给出\(Ax\)的一部分。当\(A\)有三行是，存在三个内积：
+$$
+\begin{equation}
+{\rm Ax\ by\ rows\quad}
+\begin{bmatrix}
+1&1&6\\3&0&1\\1&1&4
+\end{bmatrix}
+\begin{bmatrix}
+2\\5\\0
+\end{bmatrix}=
+\begin{bmatrix}
+1\cdot 2+1\cdot 5+6\cdot 0\\
+3\cdot 2+0\cdot 5+3\cdot 0\\
+1\cdot 2+1\cdot 5+4\cdot 0
+\end{bmatrix}=
+\begin{bmatrix}7\\6\\7\end{bmatrix}\tag2
+\end{equation}
+$$
+通常这就是\(Ax\)的解释，但是第二种方法同样重要。事实上，它更重要！它是一次乘以一列。\(Ax\)乘积一下就计算出来，就像矩阵\(A\)三列的组合：
+$$\begin{equation}
+{\rm Ax\ by\ clumns\quad}
+2\begin{bmatrix}
+1\\3\\1
+\end{bmatrix}
++5\begin{bmatrix}
+1\\0\\1
+\end{bmatrix}
++0\begin{bmatrix}
+6\\3\\4
+\end{bmatrix}=
+\begin{bmatrix}
+7\\6\\7
+\end{bmatrix}\tag3
+\end{equation}
+$$
+
+</p>
+</body>
+</html>
