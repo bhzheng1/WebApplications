@@ -14,12 +14,12 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './edit-popup.component.scss'
 })
 export class EditPopupComponent {
-  //double binding is used to update the value of the input field
+  //Update the value in parent component with double binding.
   @Input() display: boolean = false;
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() header!: string;
-  @Output() confirm: EventEmitter<Product> = new EventEmitter<Product>();
+  @Output() confirmAdd: EventEmitter<Product> = new EventEmitter<Product>();
 
   @Input() product: Product = {
     name: '',
@@ -29,7 +29,7 @@ export class EditPopupComponent {
   }
 
   onConfirm() {
-    this.confirm.emit(this.product);
+    this.confirmAdd.emit(this.product);
     this.display = false;
     this.displayChange.emit(this.display);
   }

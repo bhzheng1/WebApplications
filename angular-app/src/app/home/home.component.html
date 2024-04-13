@@ -15,9 +15,10 @@
 </div>
 
 <!--Edit product-->
-<app-edit-popup [product]="selectedProduct" [(display)]="displayEditPopup" (confirm)="onConfirmEdit($event)"
+<app-edit-popup [product]="selectedProduct" [(display)]="displayEditPopup" (confirmAdd)="onConfirmEdit($event)"
   header="Edit Product">
 </app-edit-popup>
 
 <!--Add product-->
-<app-edit-popup [(display)]="displayAddProduct" (confirm)="onConfirmAdd($event)" header="Add Product"></app-edit-popup>
+<app-edit-popup [(display)]="displayAddProduct" (confirmAdd)="onConfirmAdd($event)"
+  header="Add Product"></app-edit-popup>
